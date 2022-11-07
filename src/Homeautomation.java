@@ -1,3 +1,6 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.Scanner;
 
 public class Homeautomation {
@@ -19,6 +22,25 @@ public class Homeautomation {
             switch (choice) {
                 case 1:
                     System.out.println("insert  selected");
+                    System.out.println("enter the temperature:");
+                    int temperature = obj.nextInt();
+                    System.out.println("enter the humidity:");
+                    int humidity = obj.nextInt();
+                    System.out.println("enter the moisture:");
+                    int moisture = obj.nextInt();
+
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/homeautomationdb", "root", "");
+                        String sql = "INSERT INTO `sensorvalue`(`temperature`, `humidity`, `moisture`, `date`) VALUES (?,?,?,now())";
+                        PreparedStatement stmt = con.prepareStatement(sql);
+                        stmt.setInt(1, temperature);
+                        stmt.setInt(2, humidity);
+                        stmt.setInt(3, moisture);
+                        stmt.executeUpdate();
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
                     break;
                 case 2:
                     System.out.println("view selected");
